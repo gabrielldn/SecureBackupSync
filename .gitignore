@@ -1,0 +1,11 @@
+# Ignore logs directory
+logs/
+
+# Ignore config.sh file
+config.sh
+
+# Ignore other sensitive files
+*.key
+*.pem
+*.crt
+*.env
