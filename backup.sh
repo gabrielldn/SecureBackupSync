@@ -81,19 +81,23 @@ UPLOAD_RESULT=0
 case "$DEST_CHOICE" in
     1)
         echo "Enviando para Minio..." | tee -a "$LOG_FILE"
-        upload_minio "$ENCRYPTED_FILE" 2>> "$LOG_FILE" || UPLOAD_RESULT=$?
+        upload_minio "$ENCRYPTED_FILE" 2>&1 | tee -a "$LOG_FILE"
+        UPLOAD_RESULT=${PIPESTATUS[0]}
         ;;
     2)
         echo "Enviando para Google Drive..." | tee -a "$LOG_FILE"
-        upload_gdrive "$ENCRYPTED_FILE" 2>> "$LOG_FILE" || UPLOAD_RESULT=$?
+        upload_gdrive "$ENCRYPTED_FILE" 2>&1 | tee -a "$LOG_FILE"
+        UPLOAD_RESULT=${PIPESTATUS[0]}
         ;;
     3)
         echo "Enviando para AWS S3..." | tee -a "$LOG_FILE"
-        upload_s3 "$ENCRYPTED_FILE" 2>> "$LOG_FILE" || UPLOAD_RESULT=$?
+        upload_s3 "$ENCRYPTED_FILE" 2>&1 | tee -a "$LOG_FILE"
+        UPLOAD_RESULT=${PIPESTATUS[0]}
         ;;
     4)
         echo "Enviando via SCP..." | tee -a "$LOG_FILE"
-        upload_scp "$ENCRYPTED_FILE" 2>> "$LOG_FILE" || UPLOAD_RESULT=$?
+        upload_scp "$ENCRYPTED_FILE" 2>&1 | tee -a "$LOG_FILE"
+        UPLOAD_RESULT=${PIPESTATUS[0]}
         ;;
     *)
         echo "Destino inválido. Saindo." | tee -a "$LOG_FILE"
@@ -102,7 +106,7 @@ case "$DEST_CHOICE" in
 esac
 
 if [ $UPLOAD_RESULT -ne 0 ]; then
-    echo "Erro durante o upload do backup." | tee -a "$LOG_FILE"
+    echo "" | tee -a "$LOG_FILE"
 else
     echo "Upload concluído com sucesso." | tee -a "$LOG_FILE"
 fi

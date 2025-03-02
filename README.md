@@ -20,10 +20,17 @@ Antes de usar o SecureBackupSync, certifique-se de ter instalado/configurado:
 - **Bash**: O script utiliza Bash e utilitários padrão do Unix (`tar`, etc.).
 - **GPG** (opcional): Necessário para criptografia GPG. Configure uma chave GPG ou prepare uma senha para criptografia simétrica.
 - **OpenSSL** (opcional): Necessário para criptografia via OpenSSL.
-- **Cliente AWS CLI** (opcional): Necessário para enviar para AWS S3 ou Minio. Configure as credenciais no arquivo de configuração ou no seu ambiente.
-- **Ferramenta Google Drive CLI** (opcional): Por exemplo, a ferramenta [`gdrive`](https://github.com/prasmussen/gdrive) para enviar arquivos ao Google Drive. Certifique-se de autenticá-la antes do uso.
+- **Cliente AWS CLI** (opcional): Necessário para enviar para AWS S3 ou Minio. Configure as credenciais no arquivo de configuração ou no seu ambiente. Instale o [`AWS CLI`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+- **Ferramenta Google Drive CLI** (opcional): Por exemplo, a ferramenta [`gdrive`](https://github.com/glotlabs/gdrive) para enviar arquivos ao Google Drive. Certifique-se de autenticá-la antes do uso.
+  ```
+    wget https://github.com/glotlabs/gdrive/releases/download/3.9.1/gdrive_linux-x64.tar.gz
+    tar -xzf gdrive_linux-x64.tar.gz
+    sudo mv gdrive /usr/local/bin/
+    sudo chmod u+x /usr/local/bin/gdrive
+    gdrive version
+  ```
 - **Acesso SSH** (opcional): Para enviar via SCP, é necessário ter acesso SSH ao servidor de destino (configurar usuário, host, porta e chave ou senha).
-- **Utilitário de e-mail** (opcional): Para notificações por e-mail, configure o comando `mail` ou similar no sistema, ou ajuste o script para usar seu método preferido de envio de email.
+- **Utilitário de e-mail** (opcional): Para notificações por e-mail, configure o comando `mail` ou similar no sistema, ou ajuste o script para usar seu método preferido de envio de email. Necessário instalar o `mailutils` para uso dessa função.
 - **cURL**: Necessário para envio de notificações via webhook do DISCORD.
 
 ## Configuração
