@@ -30,5 +30,5 @@ SCP_REMOTE_PATH=""       # Caminho de destino no servidor (ex: "/caminho/para/ba
 SCP_SSH_KEY=""           # Caminho para chave SSH privada (se vazio, usar autenticação por senha)
 
 # Configurações de notificação
-SLACK_WEBHOOK_URL=""     # URL do webhook do Slack para notificações de backup
+DISCORD_WEBHOOK_URL=""     # URL do webhook do DISCORD para notificações de backup
 EMAIL_TO=""              # Endereço de email para enviar notificação de backup

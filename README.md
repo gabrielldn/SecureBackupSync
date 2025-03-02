@@ -12,7 +12,7 @@ SecureBackupSync é um script de backup interativo via linha de comando (CLI) qu
   - **AWS S3**
   - **Servidor remoto via SCP**
 - **Logs detalhados**: Todas as operações são registradas em arquivos de log no diretório `logs/`.
-- **Notificações**: Opcionalmente, envia notificação via Slack ou e-mail após a conclusão (ou falha) do backup.
+- **Notificações**: Opcionalmente, envia notificação via DISCORD ou e-mail após a conclusão (ou falha) do backup.
 
 ## Pré-requisitos
 
@@ -24,7 +24,7 @@ Antes de usar o SecureBackupSync, certifique-se de ter instalado/configurado:
 - **Ferramenta Google Drive CLI** (opcional): Por exemplo, a ferramenta [`gdrive`](https://github.com/prasmussen/gdrive) para enviar arquivos ao Google Drive. Certifique-se de autenticá-la antes do uso.
 - **Acesso SSH** (opcional): Para enviar via SCP, é necessário ter acesso SSH ao servidor de destino (configurar usuário, host, porta e chave ou senha).
 - **Utilitário de e-mail** (opcional): Para notificações por e-mail, configure o comando `mail` ou similar no sistema, ou ajuste o script para usar seu método preferido de envio de email.
-- **cURL**: Necessário para envio de notificações via webhook do Slack.
+- **cURL**: Necessário para envio de notificações via webhook do DISCORD.
 
 ## Configuração
 
@@ -32,7 +32,7 @@ Antes de usar o SecureBackupSync, certifique-se de ter instalado/configurado:
 2. Edite o arquivo `config.sh` com as informações apropriadas:
    - Defina as credenciais e configurações para os destinos que planeja usar (Minio, Google Drive, AWS S3, SCP).
    - Forneça a senha de criptografia (`ENCRYPTION_PASSWORD`) e/ou o destinatário GPG (`GPG_RECIPIENT`) para a criptografia.
-   - Configure a URL do webhook do Slack (`SLACK_WEBHOOK_URL`) e/ou o email de destino (`EMAIL_TO`) para notificações, se desejar.
+   - Configure a URL do webhook do DISCORD (`DISCORD_WEBHOOK_URL`) e/ou o email de destino (`EMAIL_TO`) para notificações, se desejar.
 3. Certifique-se de deixar o script principal executável: `chmod +x backup.sh`.
 
 ## Uso

@@ -47,19 +47,20 @@ ENCRYPTED_FILE="$TAR_FILE"
 if [ "$ENC_METHOD" == "1" ]; then
     ENCRYPTED_FILE="${TAR_FILE}.gpg"
     echo "Criptografando o arquivo com GPG..." | tee -a "$LOG_FILE"
-    encrypt_gpg "$TAR_FILE" "$ENCRYPTED_FILE" 2>> "$LOG_FILE"
+    encrypt_gpg "$TAR_FILE" "$ENCRYPTED_FILE" 2>&1 | tee -a "$LOG_FILE"
+    ENC_EXIT_CODE=${PIPESTATUS[0]}
 elif [ "$ENC_METHOD" == "2" ]; then
     ENCRYPTED_FILE="${TAR_FILE}.enc"
     echo "Criptografando o arquivo com OpenSSL..." | tee -a "$LOG_FILE"
-    encrypt_openssl "$TAR_FILE" "$ENCRYPTED_FILE" 2>> "$LOG_FILE"
+    encrypt_openssl "$TAR_FILE" "$ENCRYPTED_FILE" 2>&1 | tee -a "$LOG_FILE"
+    ENC_EXIT_CODE=${PIPESTATUS[0]}
 else
     echo "Método de criptografia inválido. Saindo." | tee -a "$LOG_FILE"
     exit 1
 fi
 
-# Verifica se a criptografia foi bem sucedida
-if [ $? -ne 0 ]; then
-    echo "Erro durante a criptografia." | tee -a "$LOG_FILE"
+if [ $ENC_EXIT_CODE -ne 0 ]; then
+    echo "Erro durante a criptografia. Código de erro: $ENC_EXIT_CODE" | tee -a "$LOG_FILE"
     echo "Backup não criptografado mantido em: $TAR_FILE (remova-o manualmente se não for necessário)." | tee -a "$LOG_FILE"
     exit 1
 fi
@@ -106,11 +107,11 @@ else
     echo "Upload concluído com sucesso." | tee -a "$LOG_FILE"
 fi
 
-# Notificações via Slack ou email
+# Notificações via DISCORD ou email
 if [ $UPLOAD_RESULT -eq 0 ]; then
-    if [ -n "$SLACK_WEBHOOK_URL" ]; then
-        SLACK_MESSAGE="Backup de $SOURCE_DIR concluído com sucesso em $(date). Destino: $DEST_CHOICE."
-        curl -s -X POST -H 'Content-type: application/json' --data "{\"text\":\"$SLACK_MESSAGE\"}" "$SLACK_WEBHOOK_URL" >> "$LOG_FILE" 2>&1
+    if [ -n "$DISCORD_WEBHOOK_URL" ]; then
+        DISCORD_MESSAGE="Backup de $SOURCE_DIR concluído com sucesso em $(date). Destino: $DEST_CHOICE."
+        curl -s -X POST -H 'Content-type: application/json' --data "{\"content\":\"$DISCORD_MESSAGE\"}" "$DISCORD_WEBHOOK_URL" >> "$LOG_FILE" 2>&1
     fi
     if [ -n "$EMAIL_TO" ]; then
         SUBJECT="Backup Concluído - $BASENAME"
@@ -119,9 +120,9 @@ if [ $UPLOAD_RESULT -eq 0 ]; then
     fi
     echo "Notificação de conclusão enviada." | tee -a "$LOG_FILE"
 else
-    if [ -n "$SLACK_WEBHOOK_URL" ]; then
-        SLACK_MESSAGE="Backup de $SOURCE_DIR falhou em $(date)."
-        curl -s -X POST -H 'Content-type: application/json' --data "{\"text\":\"$SLACK_MESSAGE\"}" "$SLACK_WEBHOOK_URL" >> "$LOG_FILE" 2>&1
+    if [ -n "$DISCORD_WEBHOOK_URL" ]; then
+        DISCORD_MESSAGE="Backup de $SOURCE_DIR falhou em $(date)."
+        curl -s -X POST -H 'Content-type: application/json' --data "{\"content\":\"$DISCORD_MESSAGE\"}" "$DISCORD_WEBHOOK_URL" >> "$LOG_FILE" 2>&1
     fi
     if [ -n "$EMAIL_TO" ]; then
         SUBJECT="Falha no Backup - $BASENAME"
