@@ -1,27 +1,27 @@
 # SecureBackupSync
 
-SecureBackupSync é um script de backup interativo via linha de comando (CLI) que permite criar backups de diretórios locais, criptografá-los e enviá-los para diversos destinos de armazenamento, como Minio, Google Drive, AWS S3 ou um servidor remoto via SCP.
+SecureBackupSync is an interactive command-line interface (CLI) backup script that allows you to create backups of local directories, encrypt them, and send them to various storage destinations such as Minio, Google Drive, AWS S3, or a remote server via SCP.
 
-## Funcionalidades
+## Features
 
-- **Backup interativo**: O script `backup.sh` pergunta ao usuário qual diretório deseja fazer backup e para onde enviá-lo.
-- **Compactação e criptografia**: O diretório selecionado é compactado em um arquivo `.tar.gz` e, em seguida, criptografado usando GPG (criptografia assimétrica ou simétrica) ou OpenSSL (criptografia simétrica AES-256).
-- **Múltiplos destinos**: Suporta envio do backup para:
-  - **Minio** (armazenamento compatível com S3)
+- **Interactive Backup**: The `backup.sh` script prompts the user for the directory to back up and the destination to send it to.
+- **Compression and Encryption**: The selected directory is compressed into a `.tar.gz` file and then encrypted using GPG (asymmetric or symmetric encryption) or OpenSSL (symmetric AES-256 encryption).
+- **Multiple Destinations**: Supports sending the backup to:
+  - **Minio** (S3-compatible storage)
   - **Google Drive**
   - **AWS S3**
-  - **Servidor remoto via SCP**
-- **Logs detalhados**: Todas as operações são registradas em arquivos de log no diretório `logs/`.
-- **Notificações**: Opcionalmente, envia notificação via DISCORD ou e-mail após a conclusão (ou falha) do backup.
+  - **Remote server via SCP**
+- **Detailed Logs**: All operations are logged in files within the `logs/` directory.
+- **Notifications**: Optionally sends notifications via DISCORD or email upon completion (or failure) of the backup.
 
-## Pré-requisitos
+## Prerequisites
 
-Antes de usar o SecureBackupSync, certifique-se de ter instalado/configurado:
-- **Bash**: O script utiliza Bash e utilitários padrão do Unix (`tar`, etc.).
-- **GPG** (opcional): Necessário para criptografia GPG. Configure uma chave GPG ou prepare uma senha para criptografia simétrica.
-- **OpenSSL** (opcional): Necessário para criptografia via OpenSSL.
-- **Cliente AWS CLI** (opcional): Necessário para enviar para AWS S3 ou Minio. Configure as credenciais no arquivo de configuração ou no seu ambiente. Instale o [`AWS CLI`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
-- **Ferramenta Google Drive CLI** (opcional): Por exemplo, a ferramenta [`gdrive`](https://github.com/glotlabs/gdrive) para enviar arquivos ao Google Drive. Certifique-se de autenticá-la antes do uso.
+Before using SecureBackupSync, ensure you have installed/configured:
+- **Bash**: The script uses Bash and standard Unix utilities (`tar`, etc.).
+- **GPG** (optional): Required for GPG encryption. Set up a GPG key or prepare a password for symmetric encryption.
+- **OpenSSL** (optional): Required for encryption via OpenSSL.
+- **AWS CLI Client** (optional): Required for sending to AWS S3 or Minio. Configure credentials in the configuration file or your environment. Install the [`AWS CLI`](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+- **Google Drive CLI Tool** (optional): For example, the [`gdrive`](https://github.com/glotlabs/gdrive) tool to send files to Google Drive. Ensure it is authenticated before use.
   ```
     wget https://github.com/glotlabs/gdrive/releases/download/3.9.1/gdrive_linux-x64.tar.gz
     tar -xzf gdrive_linux-x64.tar.gz
@@ -29,19 +29,19 @@ Antes de usar o SecureBackupSync, certifique-se de ter instalado/configurado:
     sudo chmod u+x /usr/local/bin/gdrive
     gdrive version
   ```
-- **Acesso SSH** (opcional): Para enviar via SCP, é necessário ter acesso SSH ao servidor de destino (configurar usuário, host, porta e chave ou senha).
-- **Utilitário de e-mail** (opcional): Para notificações por e-mail, configure o comando `mail` ou similar no sistema, ou ajuste o script para usar seu método preferido de envio de email. Necessário instalar o `mailutils` para uso dessa função.
-- **cURL**: Necessário para envio de notificações via webhook do DISCORD.
+- **SSH Access** (optional): To send via SCP, you need SSH access to the destination server (configure user, host, port, and key or password).
+- **Email Utility** (optional): For email notifications, configure the `mail` command or similar on the system, or adjust the script to use your preferred email sending method. Install `mailutils` for this function.
+- **cURL**: Required for sending notifications via DISCORD webhook.
 
-## Configuração
+## Configuration
 
-1. Faça uma cópia do arquivo `config.example.sh` e renomeie para `config.sh`.
-2. Edite o arquivo `config.sh` com as informações apropriadas:
-   - Defina as credenciais e configurações para os destinos que planeja usar (Minio, Google Drive, AWS S3, SCP).
-   - Forneça a senha de criptografia (`ENCRYPTION_PASSWORD`) e/ou o destinatário GPG (`GPG_RECIPIENT`) para a criptografia.
-   - Configure a URL do webhook do DISCORD (`DISCORD_WEBHOOK_URL`) e/ou o email de destino (`EMAIL_TO`) para notificações, se desejar.
-3. Certifique-se de deixar o script principal executável: `chmod +x backup.sh`.
+1. Make a copy of the `config.example.sh` file and rename it to `config.sh`.
+2. Edit the `config.sh` file with the appropriate information:
+   - Set credentials and configurations for the destinations you plan to use (Minio, Google Drive, AWS S3, SCP).
+   - Provide the encryption password (`ENCRYPTION_PASSWORD`) and/or the GPG recipient (`GPG_RECIPIENT`) for encryption.
+   - Configure the DISCORD webhook URL (`DISCORD_WEBHOOK_URL`) and/or the destination email (`EMAIL_TO`) for notifications, if desired.
+3. Ensure the main script is executable: `chmod +x backup.sh`.
 
-## Uso
+## Usage
 
-Para iniciar o backup, execute o script principal no terminal:
+To start the backup, run the main script in the terminal:
